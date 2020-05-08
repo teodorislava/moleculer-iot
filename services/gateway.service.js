@@ -10,7 +10,7 @@ module.exports = {
     methods: {
         initRoutes(app) {
             app.get("/temperature", this.getData);
-            app.get("/set", this.postData);
+            app.put("/set", this.putData);
         },
         getData(req, res) {
             const sensorId = req.query.id ? Number(req.query.id) : 0;
@@ -22,12 +22,11 @@ module.exports = {
                 })
                 .catch(this.handleErr(res));
         },
-        postData(req, res) {
-            const payload = req.query.offset ? Number(req.query.offset) : 0;
-            const id = req.query.id ? Number(req.query.id) : 0;
+        putData(req, res) {
+            const body = req.body;
             return Promise.resolve()
             .then(() => {
-                return this.broker.call('actuator.set', { offset: payload, id: id }).then(r =>
+                return this.broker.call('actuator.set', body).then(r =>
                     res.send(r)
                 );
             })

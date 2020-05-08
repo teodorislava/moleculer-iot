@@ -18,7 +18,7 @@ module.exports = {
     },
     events: {
         "temperature.set.1": {
-            group: "1",
+            group: "other",
             handler(payload) {
                console.log('Recieved "temperature.set.1" event in sensor service with payload: ', payload);
                this.offset = payload.offset;
