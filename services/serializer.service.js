@@ -1,5 +1,6 @@
 "use strict";
 
+const request = require('request');
 const Influx = require('influx');
 
 module.exports = {
@@ -23,6 +24,39 @@ module.exports = {
 			}
 		},
 	},
+	methods: {
+		sendTemperature(temp, sensorId) {
+			const body = {
+				temperature: temp,
+				sensorId: sensorId,
+				offset: 0
+			};
+			console.log(body);
+			// request.post({
+			// 	url: process.env.ANALYTICS_URL,
+			// 	headers: {
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	body: body
+			// 	}, (err, res, body) => {
+			// 		if (err) { 
+			// 			return console.log(err); 
+			// 		}
+			// 		console.log('SUCCESS!');
+			// 		console.log(res.statusCode);
+			// });
+			request.post(process.env.ANALYTICS_URL, {
+				json: body
+			}, (err, res, body) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				console.log(res.statusCode);
+				console.log(body);
+			});
+		}
+	},
 	events: {
 		"temperature.read": {
 			group: "other",
@@ -41,6 +75,7 @@ module.exports = {
                         time: payload.timestamp
                     }
 				]);
+				this.sendTemperature(payload.temperature, payload.sensorId);
 			}
 		}
 	},

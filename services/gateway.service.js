@@ -24,6 +24,7 @@ module.exports = {
         },
         putData(req, res) {
             const body = req.body;
+            console.log(body);
             return Promise.resolve()
             .then(() => {
                 return this.broker.call('actuator.set', body).then(r =>

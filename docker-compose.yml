@@ -34,6 +34,8 @@ services:
         ADMIN_PASSWORD: admin
         INFLUXDB_DATABASE: temperature
         INFLUXDB_HOST: influx
+      links:
+        - analytics
       depends_on:
         - nats
         - influx
@@ -66,5 +68,11 @@ services:
         - influx
       volumes:
         - influxdata:/var/lib/influx.db
+    analytics:
+      build:
+        context: ./analytics
+      image: analytics
+      ports:
+        - "5000:80"
 volumes:
   influxdata:

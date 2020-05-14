@@ -6,12 +6,12 @@ module.exports = {
 		set: {
 			params: {
 				offset: { type: "number" },
-				id: { type: "number" }
+				sensorId: { type: "number" }
 			},
 			async handler(ctx) {
 				console.log(ctx.params);
-                this.broker.emit(`temperature.set.${ctx.params.id}`, ctx.params);
-                return 'Success!';
+                this.broker.emit(`temperature.set.${ctx.params.sensorId}`, ctx.params);
+                return 'Success setting temperature!';
 			}
         }
 	}
